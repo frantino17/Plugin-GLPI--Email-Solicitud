@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEMO: Email de Aprobación</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .demo-banner {
+            background: #ff6b6b;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .email-preview-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .email-header {
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .email-header h2 {
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+        
+        .email-meta {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.8;
+        }
+        
+        .back-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 600;
+        }
+        
+        .back-button:hover {
+            background: #5568d3;
+        }
+        
+        /* Email template styles */
+        .email-body {
+            border: 2px dashed #ccc;
+            padding: 20px;
+            background: #fafafa;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-banner">
+        📧 VISTA PREVIA DEL EMAIL - Así se verá el correo que recibirá el responsable
+    </div>
+    
+    <div class="email-preview-container">
+        <div class="email-header">
+            <h2>📨 Correo Electrónico - Vista Previa</h2>
+            <div class="email-meta">
+                <strong>De:</strong> Sistema GLPI (noreply@institucion.edu.ar)<br>
+                <strong>Para:</strong> <span id="display-approver-email"></span><br>
+                <strong>Asunto:</strong> Solicitud de Aprobación: Correo Institucional Docente<br>
+                <strong>Fecha:</strong> <span id="current-date"></span>
+            </div>
+        </div>
+        
+        <div class="email-body" id="email-content">
+            <!-- Email template will be inserted here -->
+        </div>
+        
+        <a href="preview_form.html" class="back-button">← Volver al Formulario</a>
+    </div>
+    
+    <script>
+        // Get data from sessionStorage
+        const data = JSON.parse(sessionStorage.getItem('demoData') || '{}');
+        
+        // Display current date
+        document.getElementById('current-date').textContent = new Date().toLocaleString('es-AR');
+        document.getElementById('display-approver-email').textContent = data.approverEmail || 'responsable@institucion.edu.ar';
+        
+        // Generate token for demo
+        const demoToken = 'demo_' + Math.random().toString(36).substr(2, 32);
+        const approveUrl = 'https://glpi.institucion.edu.ar/plugins/emailapproval/front/approve.php?token=' + demoToken + '&action=approve';
+        const rejectUrl = 'https://glpi.institucion.edu.ar/plugins/emailapproval/front/approve.php?token=' + demoToken + '&action=reject';
+        
+        // Build email HTML
+        const emailHTML = `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #ffffff;">
+                <!-- Header -->
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
+                    <h1 style="color: #ffffff; margin: 0; font-size: 28px;">📧 Solicitud de Correo Institucional</h1>
+                    <p style="color: #ffffff; margin: 10px 0 0 0; font-size: 14px; opacity: 0.9;">Requiere su aprobación</p>
+                </div>
+                
+                <!-- Content -->
+                <div style="padding: 30px; background-color: #ffffff;">
+                    <p style="font-size: 16px; color: #333333; line-height: 1.6; margin-bottom: 20px;">
+                        Estimado/a Responsable,
+                    </p>
+                    
+                    <p style="font-size: 14px; color: #666666; line-height: 1.6; margin-bottom: 25px;">
+                        Se ha generado una nueva solicitud de correo institucional que requiere su aprobación. 
+                        A continuación se detallan los datos del docente solicitante:
+                    </p>
+                    
+                    <!-- Datos del Docente -->
+                    <div style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); padding: 20px; border-radius: 10px; margin-bottom: 25px;">
+                        <h2 style="color: #667eea; font-size: 18px; margin: 0 0 15px 0; border-bottom: 2px solid #667eea; padding-bottom: 8px;">
+                            👨‍🏫 Datos del Docente
+                        </h2>
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <tr>
+                                <td style="padding: 8px 0; font-weight: bold; color: #333333; width: 40%;">Nombre Completo:</td>
+                                <td style="padding: 8px 0; color: #666666;">${data.teacherName || 'No especificado'}</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px 0; font-weight: bold; color: #333333;">Legajo:</td>
+                                <td style="padding: 8px 0; color: #666666;">${data.teacherLegajo || 'No especificado'}</td>
+                            </tr>
+                            ${data.teacherEmail ? `
+                            <tr>
+                                <td style="padding: 8px 0; font-weight: bold; color: #333333;">Email Personal:</td>
+                                <td style="padding: 8px 0; color: #666666;">${data.teacherEmail}</td>
+                            </tr>
+                            ` : ''}
+                            <tr>
+                                <td style="padding: 8px 0; font-weight: bold; color: #333333;">Área/Departamento:</td>
+                                <td style="padding: 8px 0; color: #666666;">${data.departmentName || 'No especificado'}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    ${data.observations ? `
+                    <!-- Observaciones -->
+                    <div style="background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin-bottom: 25px; border-radius: 5px;">
+                        <p style="margin: 0; font-weight: bold; color: #856404; font-size: 14px;">📝 Observaciones:</p>
+                        <p style="margin: 10px 0 0 0; color: #856404; font-size: 13px; line-height: 1.5;">${data.observations}</p>
+                    </div>
+                    ` : ''}
+                    
+                    <!-- Solicitud de Acción -->
+                    <div style="background-color: #e8f4f8; padding: 20px; border-radius: 10px; margin-bottom: 25px; text-align: center;">
+                        <p style="margin: 0 0 20px 0; font-size: 15px; color: #333333; font-weight: bold;">
+                            ¿Desea aprobar esta solicitud de correo institucional?
+                        </p>
+                        
+                        <!-- Botones de Acción -->
+                        <table style="width: 100%; margin-top: 20px;">
+                            <tr>
+                                <td style="padding: 0 10px; width: 50%;">
+                                    <a href="${approveUrl}" 
+                                       style="display: block; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); 
+                                              color: #ffffff; text-decoration: none; padding: 15px 30px; 
+                                              border-radius: 8px; font-weight: bold; font-size: 16px; text-align: center;
+                                              box-shadow: 0 4px 15px rgba(17, 153, 142, 0.3);">
+                                        ✅ APROBAR
+                                    </a>
+                                </td>
+                                <td style="padding: 0 10px; width: 50%;">
+                                    <a href="${rejectUrl}" 
+                                       style="display: block; background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%); 
+                                              color: #ffffff; text-decoration: none; padding: 15px 30px; 
+                                              border-radius: 8px; font-weight: bold; font-size: 16px; text-align: center;
+                                              box-shadow: 0 4px 15px rgba(235, 51, 73, 0.3);">
+                                        ❌ RECHAZAR
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <!-- Nota Importante -->
+                    <div style="background-color: #f8f9fa; border: 1px solid #dee2e6; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+                        <p style="margin: 0; font-size: 13px; color: #666666; line-height: 1.6;">
+                            <strong>⚠️ Importante:</strong> Este enlace de aprobación es único y seguro. 
+                            Si no aprueba o rechaza esta solicitud en 48 horas, recibirá un recordatorio automático.
+                        </p>
+                    </div>
+                    
+                    <p style="font-size: 14px; color: #666666; line-height: 1.6; margin-top: 20px;">
+                        Saludos cordiales,<br>
+                        <strong>Sistema de Gestión GLPI</strong><br>
+                        <em style="font-size: 12px;">Mesa de Ayuda Institucional</em>
+                    </p>
+                </div>
+                
+                <!-- Footer -->
+                <div style="background-color: #f8f9fa; padding: 20px; text-align: center; border-radius: 0 0 10px 10px; border-top: 1px solid #dee2e6;">
+                    <p style="margin: 0; font-size: 12px; color: #999999; line-height: 1.5;">
+                        Este es un mensaje automático del sistema GLPI.<br>
+                        Por favor, no responda a este correo electrónico.
+                    </p>
+                    <p style="margin: 10px 0 0 0; font-size: 11px; color: #bbbbbb;">
+                        © 2026 Sistema GLPI - Gestión de Solicitudes
+                    </p>
+                </div>
+            </div>
+        `;
+        
+        document.getElementById('email-content').innerHTML = emailHTML;
+    </script>
+</body>
+</html>

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEMO: Formulario Solicitud Correo Docente</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .demo-banner {
+            background: #ff6b6b;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .form-content {
+            padding: 40px;
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+        }
+        
+        .form-section h2 {
+            font-size: 18px;
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .form-group label .required {
+            color: #e74c3c;
+            margin-left: 3px;
+        }
+        
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .form-group small {
+            display: block;
+            margin-top: 5px;
+            color: #666;
+            font-size: 12px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .info-box {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        
+        .info-box p {
+            margin: 0;
+            font-size: 14px;
+            color: #555;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #f0f0f0;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+        
+        .btn-secondary:hover {
+            background: #d0d0d0;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-banner">
+        🎨 VISTA PREVIA DEL FORMULARIO - Este es solo un demo visual, no envía datos reales
+    </div>
+    
+    <div class="container">
+        <div class="header">
+            <h1>📧 Solicitud de Correo Docente</h1>
+            <p>Complete el formulario para solicitar la creación de un correo institucional</p>
+        </div>
+        
+        <div class="form-content">
+            <form id="demoForm" onsubmit="event.preventDefault(); showPreview();">
+                
+                <div class="info-box">
+                    <p><strong>ℹ️ Instrucciones:</strong> Complete todos los campos obligatorios (*). 
+                    Esta solicitud será enviada al responsable del área para su aprobación.</p>
+                </div>
+                
+                <div class="form-section">
+                    <h2>👨‍🏫 Datos del Docente</h2>
+                    
+                    <div class="form-group">
+                        <label for="teacher_name">Nombre Completo del Docente <span class="required">*</span></label>
+                        <input type="text" id="teacher_name" name="teacher_name" 
+                               placeholder="Ej: Juan Carlos Pérez" required>
+                        <small>Ingrese el nombre completo del docente que solicita el correo</small>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="teacher_legajo">Legajo del Docente <span class="required">*</span></label>
+                            <input type="text" id="teacher_legajo" name="teacher_legajo" 
+                                   placeholder="Ej: 12345" required>
+                            <small>Número de legajo institucional</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="teacher_email">Email Personal del Docente</label>
+                            <input type="email" id="teacher_email" name="teacher_email" 
+                                   placeholder="Ej: juan.perez@gmail.com">
+                            <small>Para notificaciones (opcional)</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h2>🏢 Datos del Área/Departamento</h2>
+                    
+                    <div class="form-group">
+                        <label for="department_name">Nombre del Área/Departamento <span class="required">*</span></label>
+                        <input type="text" id="department_name" name="department_name" 
+                               placeholder="Ej: Departamento de Sistemas" required>
+                        <small>Área académica o administrativa a la que pertenece el docente</small>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h2>✉️ Aprobación</h2>
+                    
+                    <div class="form-group">
+                        <label for="approver_email">Email del Responsable (Jefe de Área) <span class="required">*</span></label>
+                        <input type="email" id="approver_email" name="approver_email" 
+                               placeholder="Ej: jefe.sistemas@institucion.edu.ar" required>
+                        <small>El responsable recibirá un correo para aprobar o rechazar la solicitud</small>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h2>📝 Observaciones</h2>
+                    
+                    <div class="form-group">
+                        <label for="observations">Observaciones Adicionales</label>
+                        <textarea id="observations" name="observations" 
+                                  placeholder="Agregue cualquier información adicional relevante para la solicitud..."></textarea>
+                        <small>Información complementaria sobre la solicitud (opcional)</small>
+                    </div>
+                </div>
+                
+                <div class="button-group">
+                    <button type="button" class="btn btn-secondary" onclick="resetForm()">
+                        🔄 Limpiar Formulario
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        📤 Vista Previa del Email
+                    </button>
+                </div>
+                
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        function showPreview() {
+            const teacherName = document.getElementById('teacher_name').value;
+            const teacherLegajo = document.getElementById('teacher_legajo').value;
+            const teacherEmail = document.getElementById('teacher_email').value;
+            const departmentName = document.getElementById('department_name').value;
+            const approverEmail = document.getElementById('approver_email').value;
+            const observations = document.getElementById('observations').value;
+            
+            if (!teacherName || !teacherLegajo || !departmentName || !approverEmail) {
+                alert('⚠️ Por favor complete todos los campos obligatorios (*)');
+                return;
+            }
+            
+            // Store data in sessionStorage and open email preview
+            sessionStorage.setItem('demoData', JSON.stringify({
+                teacherName,
+                teacherLegajo,
+                teacherEmail,
+                departmentName,
+                approverEmail,
+                observations
+            }));
+            
+            window.open('preview_email.html', '_blank');
+        }
+        
+        function resetForm() {
+            if (confirm('¿Está seguro de que desea limpiar el formulario?')) {
+                document.getElementById('demoForm').reset();
+            }
+        }
+    </script>
+</body>
+</html>
