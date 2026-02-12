@@ -1,0 +1,48 @@
+# Logs y archivos temporales
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Archivos de configuración local
+.env
+.env.local
+config.local.php
+
+# Dependencias
+/vendor/
+node_modules/
+
+# Archivos de IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.project
+.settings/
+
+# Archivos de sistema
+.htaccess.local
+php.ini.local
+
+# Cache
+cache/
+*.cache
+
+# Archivos sensibles
+secrets.php
+credentials.php
+private_keys/
+
+# Backups
+backup/
+*.sql
+*.sql.gz
+
+# Archivos de prueba
+test_*.php
+debug_*.php
