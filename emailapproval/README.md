@@ -2,6 +2,19 @@
 
 Plugin profesional para GLPI 11 que automatiza el proceso de aprobación externa de solicitudes de correo electrónico institucional mediante enlaces únicos y seguros enviados por email.
 
+## 🚀 Instalación Rápida
+
+**Para instalar el plugin en GLPI, ejecute:**
+
+```bash
+cd "/home/pc/Documentos/Plugin GLPI/emailapproval"
+./INSTALL_PLUGIN.sh
+```
+
+Luego vaya a GLPI → Configuración → Complementos → Instalado y active el plugin.
+
+📖 **Guía completa:** Ver [INSTALLATION_GUIDE.md](INSTALLATION_GUIDE.md)
+
 ## 🎯 Características Principales
 
 - ✅ **Detección automática** de tickets con nombre específico
